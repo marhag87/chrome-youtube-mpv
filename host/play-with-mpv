@@ -1,0 +1,55 @@
+#!/usr/bin/env python
+# Copyright (c) 2012 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import struct
+import sys
+import threading
+import Queue
+import subprocess
+import json
+import os
+
+# Thread that reads messages from the webapp.
+def read_thread_func(queue):
+  message_number = 0
+  while 1:
+    # Read the message length (first 4 bytes).
+    text_length_bytes = sys.stdin.read(4)
+
+    if len(text_length_bytes) == 0:
+      if queue:
+        queue.put(None)
+      sys.exit(0)
+
+    # Unpack message length as 4 byte integer.
+    text_length = struct.unpack('i', text_length_bytes)[0]
+
+    # Read the text (JSON object) of the message.
+    text = sys.stdin.read(text_length).decode('utf-8')
+    text_dict = json.loads(text)
+
+    if queue:
+      queue.put(text)
+    else:
+      proc = subprocess.Popen(['/bin/mpv', '--x11-name', 'tv', '--mute=no', text_dict.get('text')], env=dict(os.environ, DISPLAY=':0.0'))
+
+def Main():
+  read_thread_func(None)
+  sys.exit(0)
+
+  queue = Queue.Queue()
+
+  main_window = NativeMessagingWindow(queue)
+
+  thread = threading.Thread(target=read_thread_func, args=(queue,))
+  thread.daemon = True
+  thread.start()
+
+  main_window.mainloop()
+
+  sys.exit(0)
+
+if __name__ == '__main__':
+  Main()
