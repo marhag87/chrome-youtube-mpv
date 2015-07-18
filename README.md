@@ -1,7 +1,7 @@
 Play with mpv
 =============
 
-A chrome extension for playing youtube videos with an external application. In this case, mpv with a custom x11-name. This extension has only been tested on my specific setup, your mileage may vary.
+A chrome extension for playing youtube videos with an external application. In this case, <a href="http://mpv.io/">mpv</a> with a custom <a href="http://mpv.io/manual/stable/#options-x11-name">x11-name</a> (for <a href="https://i3wm.org/docs/userguide.html#_automatically_putting_clients_on_specific_workspaces">i3 workspace assignment</a>). This extension has only been tested on my specific setup, your mileage may vary.
 
 Installation instructions
 -------------------------
