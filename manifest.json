@@ -13,6 +13,7 @@
   },
   "permissions": [
     "nativeMessaging",
-    "tabs"
+    "tabs",
+    "https://www.youtube.com/"
   ]
 }

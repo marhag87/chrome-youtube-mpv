@@ -11,6 +11,9 @@ chrome.pageAction.onClicked.addListener(function(tab) {
     port.postMessage(message);
     console.log(message);
   });
+  chrome.tabs.executeScript({
+    code: 'document.getElementsByClassName("html5-main-video")[0].pause()'
+  });
 });
 
 function checkForValidUrl(tabId, changeInfo, tab) {
